@@ -32,7 +32,6 @@ int main(void) {
         }
     }
     
-    cout << topo << endl;
     
     if(topo == -1){
         cout << "O número de abre parênteses é igual ao número de fecha parênteses.";
@@ -63,5 +62,4 @@ void desempilhar(char v[], int &topo, char &character) {
     
     return;
 }
-
 
