@@ -7,7 +7,7 @@ void inserirSemRepetir(int lista[], int valor, int &posicao, int tamanhoMax);
 int buscar(int lista[], int valor, int quantidade);
 void listar(int lista[], int quantidade);
 int intercalar(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[]);
-int intersecao(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[], int menorQuantidade);
+int intersecao(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[]);
 int unir(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[]);
 void removerPeloIndice(int lista[], int &quantidadeLista, int indice);
 
@@ -53,7 +53,6 @@ int main() {
     cout << "\n\nImprimindo lista intercalada (C): " << endl;
     listar(lista_C, qnt_lista_C);
     
-    
     int menorQuantidadeIntersecao = qnt_lista_A;
     
     if(qnt_lista_A < qnt_lista_B){
@@ -61,7 +60,7 @@ int main() {
     }
     
     int lista_D[menorQuantidadeIntersecao];
-    int qnt_lista_D = intersecao(lista_A, qnt_lista_A, lista_B, qnt_lista_B, lista_D, menorQuantidadeIntersecao);
+    int qnt_lista_D = intersecao(lista_A, qnt_lista_A, lista_B, qnt_lista_B, lista_D);
     
     cout << "\n\nImprimindo intersecao (lista d): " << endl;
     listar(lista_D, qnt_lista_D);
@@ -105,6 +104,7 @@ void inserirSemRepetir(int lista[], int valor, int &posicao, int tamanhoMax){
         return;
     }
 }
+
 int buscar(int lista[], int valor, int quantidade){
     int i;
     for(i = 0; i < quantidade; i++){
@@ -151,7 +151,7 @@ int intercalar(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, i
     return qnt_lista_Alvo;
 }
 
-int intersecao(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[], int menorQuantidade){
+int intersecao(int lista_A[], int qnt_lista_A, int lista_B[], int qnt_lista_B, int lista_Alvo[]){
     
     int qnt_lista_Alvo = 0;
     
@@ -202,5 +202,4 @@ void removerPeloIndice(int lista[], int &quantidadeLista, int indice){
     
     quantidadeLista--;
 }
-
 
