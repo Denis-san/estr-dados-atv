@@ -16,6 +16,11 @@ void cadastrar(Paciente listaPaciente[], Paciente paciente, int &quantidade);
 int buscarPorIdentificador(Paciente listaPaciente[], int identificador, int quantidade);
 int buscarPorNome(Paciente listaPaciente[], int quantidade, string nome);
 
+void trocar(Paciente listaPaciente[], int indice1, int indice2);
+void exibirPacientes(Paciente listaPaciente[], int quantidade);
+
+void ordernarPorQuickSort(Paciente listaPaciente[], int inicio, int fim);
+
 int main(void){
     
     setlocale(LC_ALL, "Portuguese");
@@ -25,15 +30,23 @@ int main(void){
 	
 	Paciente pacienteDados;
 	
-	 string nome;
-	 int identificador = 0;
-	 int codigo = 0;
+	string nome;
+	int identificador = 0;
+	int codigo = 0;
 	
 	int quantidade = 0;
 	
 	while(opcao != 0){
-		cout << " 1 - Cadastrar paciente \n 2-Buscar paciente por Nome \n 3-Buscar paciente por Identificador \n 4-Exibir pacientes por ordem de idade " << endl;
-		cout << " Digite a opção desejada: ";	
+	    cout << "\n+----------------------------------------------------------+\n";
+        cout << "| 1 - Cadastrar paciente                                   |\n";
+        cout << "| 2 - Buscar paciente por Nome                             |\n";
+        cout << "| 3 - Buscar paciente por Identificador                    |\n";
+        cout << "| 4 - Exibir pacientes por ordem de idade (com QuickSort)  |\n";
+        cout << "| 5 - Exibir pacientes por ordem de idade (com MergeSort)  |\n";
+        cout << "| 0 - Encerrar o programa                                  |\n";
+        cout << "+----------------------------------------------------------+\n";
+        
+		cout << "\n - Digite a opção desejada: ";	
 		cin >> opcao;
 		switch(opcao){
 			case(1): 
@@ -51,8 +64,7 @@ int main(void){
 			    
 				cadastrar(listaPaciente, pacienteDados, quantidade);
 				
-				cout << endl;
-				
+				cout << "SUCESSO!" << endl;
 				break;
 			case(2):
 				cout << "\nDigite o nome do paciente a ser buscado: ";
@@ -71,15 +83,26 @@ int main(void){
 				
 				codigo = buscarPorIdentificador(listaPaciente, identificador, quantidade);
 				
-				cout << "\nNome: " << listaPaciente[codigo].nome << endl;
-				cout << "Idade: " << listaPaciente[codigo].idade << endl;
-				cout << "identificador: " << listaPaciente[codigo].identificador << endl << endl;
+				if(codigo > 0){
+					cout << "\nNome: " << listaPaciente[codigo].nome << endl;
+		        	cout << "Idade: " << listaPaciente[codigo].idade << endl;
+				    cout << "identificador: " << listaPaciente[codigo].identificador << endl << endl;
+				}
+			
+				cout << "Paciente não encontrado!\n";
 				break;
 			case(4):
-			//	exibirPaciente();
-			//	break;
+			    
+			    ordernarPorQuickSort(listaPaciente, 0, quantidade);
+			    
+			    cout << "----------------------------------------------------------\n";
+			    exibirPacientes(listaPaciente, quantidade);
+				break;
+			case(5):
+			    
+				break;
 			default:
-				cout << "Digite uma opção valida " << endl;
+				break;
 		}
 	}
 }
@@ -130,3 +153,66 @@ int buscarPorNome(Paciente listaPaciente[], int quantidade, string nome){
     cout << "Paciente não encontrado!" << endl;
     return -1;
 }
+
+void ordernarPorQuickSort(Paciente listaPaciente[], int inicio, int fim){
+    Paciente pivo = listaPaciente[inicio];
+    int i = inicio;
+    int indicePivo;
+    
+    int j;
+    for(j = (i+1); j <= (fim  - 1); j++){
+        if(listaPaciente[j].idade >= pivo.idade){
+            i = i + 1;
+            trocar(listaPaciente, i, j);
+        }
+    }
+    
+    trocar(listaPaciente, inicio, i);
+    indicePivo = i;
+    
+    if(inicio < fim){
+        ordernarPorQuickSort(listaPaciente, inicio, indicePivo); 
+        ordernarPorQuickSort(listaPaciente, (indicePivo + 1), fim); 
+    }
+} 
+
+void trocar(Paciente listaPaciente[], int indice1, int indice2){ 
+    Paciente paciente_temp = listaPaciente[indice1]; 
+	
+	listaPaciente[indice1] = listaPaciente[indice2]; 
+	listaPaciente[indice2] = paciente_temp; 
+}
+
+void exibirPacientes(Paciente listaPaciente[], int quantidade){
+    
+    if(quantidade <= 0){
+        cout << "Lista vazia!";
+        return;
+    }
+    
+    int i;
+    for(i = 0; i < quantidade; i++){
+        cout << "Paciente #" << (i+1) << ":\n";
+        cout << "\nNome: " << listaPaciente[i].nome << endl;
+		cout << "Idade: " << listaPaciente[i].idade << endl;
+		cout << "identificador: " << listaPaciente[i].identificador << endl;
+        cout << "----------------------------------------------------------\n\n";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
