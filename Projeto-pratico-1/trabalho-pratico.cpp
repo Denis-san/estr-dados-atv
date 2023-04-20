@@ -8,18 +8,22 @@ using namespace std;
 typedef struct {
 	int codigo;	
 	string nome; 
-	int idade;	//merge sort
+	int idade;	//mergesort e quicksort
 	int identificador; 
 } Paciente;
 
 void cadastrar(Paciente listaPaciente[], Paciente paciente, int &quantidade);
+
 int buscarPorIdentificador(Paciente listaPaciente[], int identificador, int quantidade);
 int buscarPorNome(Paciente listaPaciente[], int quantidade, string nome);
 
+void juntar(Paciente listaPaciente[], int inicio, int meio, int fim);
 void trocar(Paciente listaPaciente[], int indice1, int indice2);
-void exibirPacientes(Paciente listaPaciente[], int quantidade);
 
 void ordernarPorQuickSort(Paciente listaPaciente[], int inicio, int fim);
+void ordenarPorMergeSort(Paciente listaPaciente[], int inicio, int fim);
+
+void exibirPacientes(Paciente listaPaciente[], int quantidade);
 
 int main(void){
     
@@ -33,9 +37,8 @@ int main(void){
 	string nome;
 	int identificador = 0;
 	int codigo = 0;
-	
 	int quantidade = 0;
-	
+
 	while(opcao != 0){
 	    cout << "\n+----------------------------------------------------------+\n";
         cout << "| 1 - Cadastrar paciente                                   |\n";
@@ -72,10 +75,13 @@ int main(void){
 		    	
 		    	codigo = buscarPorNome(listaPaciente, quantidade, nome);
 		    	
-		    	cout << "\nNome: " << listaPaciente[codigo].nome << endl;
-				cout << "Idade: " << listaPaciente[codigo].idade << endl;
-				cout << "identificador: " << listaPaciente[codigo].identificador << endl << endl;
-				
+                if(codigo > 0){
+                    cout << "\nNome: " << listaPaciente[codigo].nome << endl;
+                    cout << "Idade: " << listaPaciente[codigo].idade << endl;
+                    cout << "identificador: " << listaPaciente[codigo].identificador << endl << endl;
+                }
+
+                cout << "Paciente não encontrado!" << endl;
 				break;	
 			case(3):
 				cout << "\nDigite o identificador do paciente a ser buscado: ";
@@ -92,14 +98,16 @@ int main(void){
 				cout << "Paciente não encontrado!\n";
 				break;
 			case(4):
-			    
 			    ordernarPorQuickSort(listaPaciente, 0, quantidade);
-			    
+
 			    cout << "----------------------------------------------------------\n";
 			    exibirPacientes(listaPaciente, quantidade);
 				break;
 			case(5):
+			    ordenarPorMergeSort(listaPaciente, 0, quantidade-1);
 			    
+			    cout << "----------------------------------------------------------\n";
+			    exibirPacientes(listaPaciente, quantidade);
 				break;
 			default:
 				break;
@@ -113,7 +121,7 @@ void cadastrar(Paciente listaPaciente[], Paciente paciente, int &quantidade){
         cout << "Erro! Lista cheia!";
         return;
     }   
-   
+
     listaPaciente[quantidade++] = paciente;
 }
 
@@ -150,7 +158,6 @@ int buscarPorNome(Paciente listaPaciente[], int quantidade, string nome){
         }
     }
     
-    cout << "Paciente não encontrado!" << endl;
     return -1;
 }
 
@@ -178,7 +185,6 @@ void ordernarPorQuickSort(Paciente listaPaciente[], int inicio, int fim){
 
 void trocar(Paciente listaPaciente[], int indice1, int indice2){ 
     Paciente paciente_temp = listaPaciente[indice1]; 
-	
 	listaPaciente[indice1] = listaPaciente[indice2]; 
 	listaPaciente[indice2] = paciente_temp; 
 }
@@ -200,19 +206,46 @@ void exibirPacientes(Paciente listaPaciente[], int quantidade){
     }
 }
 
+void ordenarPorMergeSort(Paciente listaPaciente[], int inicio, int fim){
+	int meio;
+	if(inicio<fim){
+		meio = (inicio+fim)/2;
+		ordenarPorMergeSort(listaPaciente,inicio,meio);
+		ordenarPorMergeSort(listaPaciente,meio+1,fim);
+		juntar(listaPaciente,inicio,meio,fim);
+	}
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void juntar(Paciente listaPaciente[], int inicio, int meio, int fim){
+    int i, j, k;
+	Paciente listaPaciente_temp[fim+1];
+    i = inicio;
+    k = inicio;
+    j = meio + 1;
+    while (i <= meio && j <= fim) {
+        if (listaPaciente[i].idade < listaPaciente[j].idade) {
+            listaPaciente_temp[k] = listaPaciente[i];
+            k++;
+            i++;
+        }
+        else  {
+            listaPaciente_temp[k] = listaPaciente[j];
+            k++;
+            j++;
+        }
+    }
+    while (i <= meio) {
+        listaPaciente_temp[k] = listaPaciente[i];
+        k++;
+        i++;
+    }
+    while (j <= fim) {
+        listaPaciente_temp[k] = listaPaciente[j];
+        k++;
+        j++;
+    }
+    for (i = inicio; i < k; i++)  {
+        listaPaciente[i] = listaPaciente_temp[i];
+    }
+}
 
